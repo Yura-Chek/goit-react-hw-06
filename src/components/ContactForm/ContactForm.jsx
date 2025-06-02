@@ -1,6 +1,9 @@
 import css from "./ContactForm.module.css";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { useDispatch } from "react-redux";
+import { nanoid } from "nanoid/non-secure";
+import { addContact } from "../../redux/contactsSlice";
 
 const defaultValues = {
   name: "",
@@ -18,12 +21,19 @@ const ContactsSchema = Yup.object().shape({
     .required("Required"),
 });
 
-export default function ContactForm({ contactAdd }) {
+export default function ContactForm() {
+  const dispatch = useDispatch();
+
   return (
     <Formik
       initialValues={defaultValues}
       onSubmit={(values, actions) => {
-        contactAdd(values);
+        const contactWithId = {
+          id: nanoid(),
+          name: values.name,
+          number: values.tel,
+        };
+        dispatch(addContact(contactWithId));
         actions.resetForm();
       }}
       validationSchema={ContactsSchema}
@@ -43,7 +53,6 @@ export default function ContactForm({ contactAdd }) {
           placeholder="phone number"
         />
         <ErrorMessage name="tel" component="span" />
-
         <button className={css.btn} type="submit">
           Add contact
         </button>
