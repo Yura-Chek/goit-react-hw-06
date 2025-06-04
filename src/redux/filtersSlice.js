@@ -7,12 +7,12 @@ const filtersSlice = createSlice({
   },
   reducers: {
     changeFilter(state, action) {
-      state.filter = action.payload.toLowerCase();
+      state.filter = action.payload;
     },
   },
 });
 
-export const selectFilters = (state) => state.filters.filter;
+export const selectNameFilter = (state) => state.filters.filter;
 
 export const { changeFilter } = filtersSlice.actions;
 export default filtersSlice.reducer;

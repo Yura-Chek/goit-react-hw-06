@@ -2,8 +2,7 @@ import css from "./ContactForm.module.css";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
-import { nanoid } from "nanoid/non-secure";
-import { addContact } from "../../redux/contactsSlice";
+import { addContact } from "../../redux/contactsOps";
 
 const defaultValues = {
   name: "",
@@ -28,12 +27,7 @@ export default function ContactForm() {
     <Formik
       initialValues={defaultValues}
       onSubmit={(values, actions) => {
-        const contactWithId = {
-          id: nanoid(),
-          name: values.name,
-          number: values.tel,
-        };
-        dispatch(addContact(contactWithId));
+        dispatch(addContact({ name: values.name, number: values.tel }));
         actions.resetForm();
       }}
       validationSchema={ContactsSchema}
